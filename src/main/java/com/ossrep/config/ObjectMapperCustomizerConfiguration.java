@@ -1,4 +1,4 @@
-package com.ossrep.account.config;
+package com.ossrep.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
