@@ -1,0 +1,43 @@
+mp:
+  openapi:
+    extensions:
+      smallrye:
+        info:
+          title: Account API
+          version: 0.0.1
+          description: API for retrieving accounts
+          contact:
+            email: techsupport@ossrep.com
+            name: Account API Support
+            url: http://ossrep.github.io/account-api
+          license:
+            name: Apache 2.0
+            url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+quarkus:
+  banner:
+    enabled: false
+  datasource:
+    db-kind: postgresql
+  hibernate-orm:
+    database:
+      generation: none
+
+"%test":
+  quarkus:
+    log:
+      level: INFO
+      category:
+        "com.ossrep":
+          level: DEBUG
+    datasource:
+      jdbc:
+        url: jdbc:tc:postgresql:latest:///account_db
+        driver: org.testcontainers.jdbc.ContainerDatabaseDriver
+    hibernate-orm:
+      dialect: org.hibernate.dialect.PostgreSQL10Dialect
+      log:
+        sql: true
+    flyway:
+      migrate-at-start: true
+      locations: db/migration,db/testdata
