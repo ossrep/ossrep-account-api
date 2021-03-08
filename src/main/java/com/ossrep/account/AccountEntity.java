@@ -4,7 +4,6 @@ import com.ossrep.account_type.AccountTypeEntity;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 
 @Entity(name = "Account")
 @Table(name = "account")

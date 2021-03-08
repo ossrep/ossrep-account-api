@@ -1,6 +1,5 @@
 package com.ossrep.account;
 
-import com.ossrep.account_type.AccountType;
 import com.ossrep.account_type.AccountTypeRepository;
 import com.ossrep.exception.ServiceException;
 import lombok.AllArgsConstructor;

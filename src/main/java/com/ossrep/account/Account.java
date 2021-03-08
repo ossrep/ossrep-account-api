@@ -3,7 +3,6 @@ package com.ossrep.account;
 import com.ossrep.account_type.AccountType;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data

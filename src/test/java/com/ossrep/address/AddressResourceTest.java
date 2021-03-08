@@ -1,4 +1,4 @@
-package com.ossrep.account_type;
+package com.ossrep.address;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 
 @QuarkusTest
-public class AccountTypeResourceTest {
+public class AddressResourceTest {
 
     @Test
     public void getAll() {
         given()
-          .when().get("/api/account-types")
+          .when().get("/api/addresses")
           .then()
              .statusCode(200);
     }
