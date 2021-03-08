@@ -9,7 +9,7 @@ import static io.restassured.RestAssured.given;
 public class ContactTypeResourceTest {
 
     @Test
-    public void testHelloEndpoint() {
+    public void getAll() {
         given()
           .when().get("/api/contact-types")
           .then()

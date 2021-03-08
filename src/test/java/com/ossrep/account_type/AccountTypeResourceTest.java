@@ -10,7 +10,7 @@ import static org.hamcrest.CoreMatchers.is;
 public class AccountTypeResourceTest {
 
     @Test
-    public void testHelloEndpoint() {
+    public void getAll() {
         given()
           .when().get("/api/account-types")
           .then()
