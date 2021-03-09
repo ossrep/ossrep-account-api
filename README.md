@@ -1,5 +1,15 @@
 # ossrep-account-api project
 
+```
+./mvnw clean package
+
+docker build -f src/main/docker/Dockerfile.jvm -t quay.io/ossrep/ossrep-account-api:0.0.3 .
+
+docker push quay.io/ossrep/ossrep-account-api:0.0.3
+```
+
+
+
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
