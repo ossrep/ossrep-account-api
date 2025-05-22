@@ -1,1 +1,50 @@
-{}
+quarkus:
+  banner:
+    enabled: false
+  hibernate-orm:
+    database:
+      generation: none
+    log:
+      sql: true
+  flyway:
+    migrate-at-start: true
+  log:
+    level: INFO
+    category:
+      "org.ossrep":
+        level: DEBUG
+  smallrye-openapi:
+    info-title: ossrep-account-api
+    info-version: 1.0.0
+  swagger-ui:
+    always-include: true
+    operations-sorter: method
+
+"%dev":
+  quarkus:
+    flyway:
+      locations: db/migration,db/testdata
+
+"%test":
+  quarkus:
+    flyway:
+      locations: db/migration,db/testdata
+
+"%prod":
+  quarkus:
+    datasource:
+      db-kind: postgresql
+      jdbc:
+        url: ${DB_URL}
+      username: ${DB_USER}
+      password: ${DB_PASSWORD}
+    flyway:
+      locations: db/migration
+    hibernate-orm:
+      log:
+        sql: false
+    log:
+      level: ${LOG_LEVEL:-INFO}
+      category:
+        "org.ossrep":
+          level: ${LOG_LEVEL_OSSREP:-INFO}

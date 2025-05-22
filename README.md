@@ -1,59 +1,48 @@
 # ossrep-account-api
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
-
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
-
-## Running the application in dev mode
-
-You can run your application in dev mode that enables live coding using:
-
+Run in Dev Mode
 ```shell script
-./mvnw quarkus:dev
+./mvnw clean quarkus:dev
+```
+or 
+```shell script
+quarkus dev --clean
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
-
-## Packaging and running the application
-
-The application can be packaged using:
-
+Build Locally
 ```shell script
-./mvnw package
+./mvnw clean package
+podman build -t quay.io/ossrep/ossrep-account-api:0.0.1 .
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
+Run Locally
 ```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
+podman network create ossrep-network
+podman run --name ossrep-account-db \
+  -d --rm \
+  -e POSTGRES_DB=ossrep-account-db \
+  -e POSTGRES_USER=testuser \
+  -e POSTGRES_PASSWORD=Pass123! \
+  -p 5432:5432 \
+  --network ossrep-network \
+  docker.io/library/postgres:17
+  
+podman run --name ossrep-account-api \
+  -i --rm \
+  -e DB_URL="jdbc:postgresql://ossrep-account-db:5432/ossrep-account-db" \
+  -e DB_USER=testuser \
+  -e DB_PASSWORD="Pass123!" \
+  -p 8080:8080 \
+  --network ossrep-network \
+  quay.io/ossrep/ossrep-account-api:0.0.1
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
+Interact with DB
+```shell
+podman exec -it ossrep-account-db psql -U testuser -d ossrep-account-db
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+## Other Environment Configuration Options
 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/ossrep-account-api-0.0.1-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
-
-## Related Guides
-
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- YAML Configuration ([guide](https://quarkus.io/guides/config-yaml)): Use YAML to configure your Quarkus application
+LOG_LEVEL
+LOG_LEVEL_OSSREP
