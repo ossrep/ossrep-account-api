@@ -1,6 +1,6 @@
 package org.ossrep.customer;
 
-public record IndividualCustomer(Long customerId, String firstName, String middleName, String lastName, String suffix) implements Customer {
+public record IndividualCustomer(Long customerId, String prefix, String firstName, String middleName, String lastName, String suffix) implements Customer {
 
     @Override
     public Long getCustomerId() {

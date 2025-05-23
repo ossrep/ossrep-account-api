@@ -1,4 +1,5 @@
 CREATE TYPE customer_type AS ENUM ('INDIVIDUAL', 'BUSINESS');
+CREATE CAST (varchar AS customer_type) WITH INOUT AS IMPLICIT;
 
 CREATE TABLE customer
 (
