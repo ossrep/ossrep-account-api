@@ -68,4 +68,17 @@ public class CustomerResourceV1Test {
         Assertions.assertNotNull(saved);
     }
 
+    @Test
+    @TestSecurity(user = "testUser", roles = {Role.CUSTOMER_WRITE})
+    public void postFailNoFirstName() {
+        IndividualCustomerV1 customer = new IndividualCustomerV1(null, null,
+                null, null, TestData.randomString(10), null);
+        given()
+                .contentType(ContentType.JSON)
+                .body(customer)
+                .post("/api/v1/customers/individual")
+                .then()
+                .statusCode(Response.Status.BAD_REQUEST.getStatusCode());
+    }
+
 }
