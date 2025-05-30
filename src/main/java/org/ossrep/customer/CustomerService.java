@@ -31,6 +31,13 @@ public class CustomerService {
         return toIndividualCustomer(entity);
     }
 
+    @Transactional
+    public BusinessCustomer create(BusinessCustomer businessCustomer) {
+        CustomerEntity entity = toCustomerEntity(businessCustomer);
+        this.customerRepository.persist(entity);
+        return toBusinessCustomer(entity);
+    }
+
     public Customer toCustomer(CustomerEntity customerEntity) {
         switch (customerEntity.customerType) {
             case BUSINESS -> {
@@ -60,6 +67,14 @@ public class CustomerService {
         entity.middleName = individualCustomer.middleName();
         entity.lastName = individualCustomer.lastName();
         entity.suffix = individualCustomer.suffix();
+        return entity;
+    }
+
+    public CustomerEntity toCustomerEntity(BusinessCustomer businessCustomer) {
+        CustomerEntity entity = new CustomerEntity();
+        entity.customerId = businessCustomer.getCustomerId();
+        entity.customerType = businessCustomer.getCustomerType();
+        entity.legalName = businessCustomer.legalName();
         return entity;
     }
 

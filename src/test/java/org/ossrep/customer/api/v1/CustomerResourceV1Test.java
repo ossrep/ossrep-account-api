@@ -81,4 +81,30 @@ public class CustomerResourceV1Test {
                 .statusCode(Response.Status.BAD_REQUEST.getStatusCode());
     }
 
+    @Test
+    @TestSecurity(user = "testUser", roles = {Role.CUSTOMER_WRITE})
+    public void postBusinessCustomer() {
+        BusinessCustomerV1 customer = new BusinessCustomerV1(null, TestData.randomString(10));
+        CustomerV1 saved = given()
+                .contentType(ContentType.JSON)
+                .body(customer)
+                .post("/api/v1/customers/business")
+                .then()
+                .statusCode(Response.Status.CREATED.getStatusCode())
+                .extract().as(CustomerV1.class);
+        Assertions.assertNotNull(saved);
+    }
+
+    @Test
+    @TestSecurity(user = "testUser", roles = {Role.CUSTOMER_WRITE})
+    public void postFailNoLegalName() {
+        BusinessCustomerV1 customer = new BusinessCustomerV1(null, null);
+        given()
+                .contentType(ContentType.JSON)
+                .body(customer)
+                .post("/api/v1/customers/business")
+                .then()
+                .statusCode(Response.Status.BAD_REQUEST.getStatusCode());
+    }
+
 }

@@ -1,6 +1,12 @@
 package org.ossrep.customer;
 
-public record BusinessCustomer(Long customerId, String legalName) implements Customer {
+import jakarta.validation.constraints.NotEmpty;
+
+public record BusinessCustomer(
+        Long customerId,
+        @NotEmpty(message = "{Customer.legalName.required}")
+        String legalName
+) implements Customer {
 
     @Override
     public Long getCustomerId() {

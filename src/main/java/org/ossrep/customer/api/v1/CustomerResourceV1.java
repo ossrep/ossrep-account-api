@@ -14,10 +14,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-import org.ossrep.customer.Customer;
-import org.ossrep.customer.CustomerService;
-import org.ossrep.customer.CustomerType;
-import org.ossrep.customer.IndividualCustomer;
+import org.ossrep.customer.*;
 
 import java.net.URI;
 
@@ -62,8 +59,21 @@ public class CustomerResourceV1 {
     )
     @APIResponse(responseCode = "400", description = "Invalid Customer")
     @RolesAllowed(Role.CUSTOMER_WRITE)
-    public Response post(@NotNull @Valid IndividualCustomerV1 individualCustomerV1, @Context UriInfo uriInfo) {
+    public Response postIndividualCustomer(@NotNull @Valid IndividualCustomerV1 individualCustomerV1, @Context UriInfo uriInfo) {
         IndividualCustomer created = customerService.create(this.toDomain(individualCustomerV1));
+        URI uri = uriInfo.getAbsolutePathBuilder().path(Long.toString(created.customerId())).build();
+        return Response.created(uri).entity(this.toApi(created)).build();
+    }
+
+    @POST
+    @Path("/business")
+    @APIResponse(responseCode = "201", description = "Business Customer Created",
+            content = @Content(schema = @Schema(implementation = BusinessCustomerV1.class))
+    )
+    @APIResponse(responseCode = "400", description = "Invalid Customer")
+    @RolesAllowed(Role.CUSTOMER_WRITE)
+    public Response postBusinessCustomer(@NotNull @Valid BusinessCustomerV1 businessCustomerV1, @Context UriInfo uriInfo) {
+        BusinessCustomer created = customerService.create(this.toDomain(businessCustomerV1));
         URI uri = uriInfo.getAbsolutePathBuilder().path(Long.toString(created.customerId())).build();
         return Response.created(uri).entity(this.toApi(created)).build();
     }
@@ -87,6 +97,10 @@ public class CustomerResourceV1 {
     private IndividualCustomer toDomain(IndividualCustomerV1 individualCustomerV1) {
         return new IndividualCustomer(individualCustomerV1.customerId(), individualCustomerV1.prefix(), individualCustomerV1.firstName(),
                 individualCustomerV1.middleName(), individualCustomerV1.lastName(), individualCustomerV1.suffix());
+    }
+
+    private BusinessCustomer toDomain(BusinessCustomerV1 businessCustomerV1) {
+        return new BusinessCustomer(businessCustomerV1.customerId(), businessCustomerV1.legalName());
     }
 
 }
